@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Data{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="">
+        <div class="row text-center">
+            <div class="col-md-5 mx-auto">
+                <div class="image">
+                    <img src="" alt="" id="">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="image">
+                    <img src="" alt="" id="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="nav-link" href="{% url 'homepage' %}">
+        <input class="btn btn-md btn-primary" value="Go Back">
+    </a>
+    <div class="wrapper">
+        <div class="content">
+            <div class="row">
+                <div class="col-5">
+                    <div class="icon" id="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <div class="image"><img src="" alt="" id="left-eye" class="card-img w-50"></div>
+                    <div class="text text-light fw-bold" id="left-caption">No file choosen for left eye!</div>
+                    <div class="file-name" id="left-image-filename">File name here </div>
+                    <div id="cancel-btn"><i class="fas fa-times"></i></div>
+                </div>
+                <div class="col-2"></div>
+                <div class="col-5">
+                    <div class="icon" id="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <div class="image"><img src="" alt="" id="right-eye" class="card-img w-50"></div>
+                    <div class="text text-light fw-bold" id="right-caption">No file choosen for right eye!</div>
+                    <div class="file-name" id="right-image-filename">File name here </div>
+                    <div id="cancel-btn" ><i class="fas fa-times"></i></div>
+                </div>
+            </div>
+        </div>        
+    </div>
+
+    <form method="POST" class="form" enctype="multipart/form-data">{% csrf_token %}
+        <div class="row mt-5">
+            <div class="col d-grid">
+                <input id="default-btn" type="file" class="rounded leftEye" accept="image/*" name="left_eye" id="left-eye" hidden>
+                <input id="custom-btn" onclick="LeftEyeActive()" class="LeftEyeBtn btn" value="Left Eye">
+            </div>
+            <div class="col d-grid">
+                <input id="default-btn" type="file" class="rounded rightEye" accept="image/*" name="right_eye" id="right-eye" hidden>
+                <input id="custom-btn" onclick="RightEyeActive()" class="RightEyeBtn btn" value="Right Eye">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-5 mx-auto">
+                <input type="submit" class="btn btn-md btn-danger" value="Upload" id="Upload">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const LeftEyeFile = document.querySelector(".leftEye");
+    const RightEyeFile = document.querySelector(".rightEye");
+
+    const LeftEyeBtn = document.querySelector(".LeftEyeBtn");
+    const RightEyeBtn = document.querySelector(".RightEyeBtn");
+
+    const LeftEyeContainer = document.querySelector("#left-eye");
+    const RightEyeContainer = document.querySelector("#right-eye");
+
+    const LeftFilename = document.querySelector("#left-image-filename");
+    const RightFilename = document.querySelector("#right-image-filename");
+    
+    const LeftCaption = document.querySelector("#left-caption");
+    const RightCaption = document.querySelector("#right-caption");
+
+    let regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_]+$/;
+
+
+    function LeftEyeActive(){
+        LeftEyeFile.click()
+    }
+
+    function RightEyeActive(){
+        RightEyeFile.click()
+    }
+
+    LeftEyeFile.addEventListener("change", function(){
+        const file = this.files[0];
+        if(file){
+            const reader = new FileReader();
+            reader.onload = function(){
+                const result = reader.result;
+                LeftEyeContainer.src = result;
+            }
+            reader.readAsDataURL(file);
+        }
+        if(this.value){
+            let valueStore = this.value;
+            LeftCaption.innerText = '';
+            LeftFilename.textContent = valueStore.match(regExp);
+        }
+    });
+
+    RightEyeFile.addEventListener("change", function(){
+        const file = this.files[0];
+        if(file){
+            const reader = new FileReader();
+            reader.onload = function(){
+                const result = reader.result;
+                RightEyeContainer.src = result;
+            }
+            reader.readAsDataURL(file);
+        }
+        if(this.value){
+            let valueStore = this.value;
+            RightCaption.innerText = '';
+            RightFilename.textContent = valueStore.match(regExp);
+        }
+    });
+    
+</script>
+{% endblock %}

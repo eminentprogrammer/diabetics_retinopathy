@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col text-light" style="margin-top:280px; margin-left: 200px;">
+            <h4> Welcome to our healthcare <t class="text-danger">center</t>, where we provide you with automated diabetics test </h4>
+            <a class="nav-link mt-2" href="{% url 'register' %}">
+                <div class="btn btn-primary shadow"> Run Test </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

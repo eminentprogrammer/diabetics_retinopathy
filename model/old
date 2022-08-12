@@ -1,0 +1,101 @@
+def process_img2(self):
+    patient_instance = Test.objects.get(slug=self.slug)
+    DIR = str(patient_instance.get_data_url())
+
+    test = [(os.path.join(BASE_DIR, "plugins\media\\"+str(DIR.replace('/','\\'))))]
+    
+    test = pd.DataFrame({'Image': test, 'Labels' : 'Unknown'})
+
+    # For test datagenerator, we only normalize the data.
+    test_datagen = ImageDataGenerator(rescale = 1./255)
+    
+    # Evaluate the performance of the model
+    test_generator = test_datagen.flow_from_dataframe(
+        test,
+        directory='./',
+        x_col="Image",
+        y_col="Labels",
+        target_size=(256, 256),
+        color_mode="rgb",
+        class_mode="categorical",
+        batch_size=32)
+    
+    # # Load the model
+    model = tensorflow.keras.models.load_model(WEIGHT_DIR)
+    # model.load_weights(MODEL_DIR)
+    process_data(self)
+
+    # Assigning label names to the corresponding indexes    
+    labels = {0: 'Mild', 1: 'Moderate', 2: 'No_DR', 3:'Proliferate_DR', 4: 'Severe'}
+
+    prediction = []
+    original = []
+    image = []
+    data = []
+
+    for item in range(len(test)):
+        print(test["Image"])
+        # code to open the image
+        img= PIL.Image.open(test["Image"].tolist()[item])
+
+        # resizing the image to (256,256)
+        img = img.resize((256,256))
+        
+        # appending image to the image list
+        image.append(img)
+        
+        # converting image to array
+        img = np.asarray(img, dtype= np.float32)
+        
+        # normalizing the image
+        img = img / 255
+        
+        # reshaping the image in to a 4D array
+        img = img.reshape(-1,256,256,3)
+        
+        # making prediction of the model
+        predict = model.predict(img)
+        
+        # getting the index corresponding to the highest value in the prediction
+        predict = np.argmax(predict)
+        
+        # appending the predicted class to the list
+        prediction.append(labels[predict])
+        
+        # appending original class to the list
+        original.append(test['Labels'].tolist()[item])
+
+    # Getting the test accuracy 
+    score = accuracy_score(original, prediction)
+    print(f"Original: {original}, Prediction: {prediction}")
+
+    print("Test Accuracy : {}".format(score))
+
+    print(f"The patient is suffering from {prediction}") #This will print value from 0 to 4
+    
+    # # Visualizing the results
+    import random
+    fig = plt.figure(figsize = (100,100))
+    
+    j = random.randint(0, len(image))
+
+    fig.add_subplot(40, 1, 1)
+
+    plt.xlabel("Prediction: " + prediction[0] +"   Original: " + original[0])
+    
+    # plt.imshow(image[j])
+    # plt.savefig(f"plugins\media\diabetics_test\{self.slug}.png")
+
+    # patient_instance.generated_data = f"diabetics_test/{self.slug}.png"
+    
+    patient_instance.result = prediction[0]
+    
+    patient_instance.save()
+    
+    fig.tight_layout()
+    # plt.show()
+
+    print(classification_report(np.asarray(original), np.asarray(prediction)))
+
+
+    return prediction

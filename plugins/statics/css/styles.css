@@ -1,0 +1,88 @@
+
+html, body{
+    height: 100vh;
+    place-items: center;
+    text-align: center;
+}
+
+body{
+    background-image: url("/static/images/bg.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+
+.wrapper{
+    margin-top: 30px;
+    height: 400px;
+    width: 100%;
+    border-radius: 10px;
+    background: rgba(255, 150, 100, 0.3);
+    border: 2px dashed #c2cdda;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#upload-icon{
+    font-size: 50px;
+    font-weight:500;
+    color: #5B5B7B;
+}
+.text{
+    font-size: 20px;
+    font-weight: 500;
+}
+.file-name{
+    position: absolute;
+    bottom: 200px;
+    margin-left: 40px;
+    padding: 5px;
+    color: #fff;
+    font-size: 18px;
+    /* display: none; */
+    background: linear-gradient(135deg, #3a8ffe 0%, #9658fe 100%);
+}
+#cancel-btn{
+    position: absolute;
+    opacity: 0.5;
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#cancel-btn:focus{
+    opacity: 1;
+}
+
+#custom-btn{
+    width: 100%;
+    height:40px;
+    display:block;
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: linear-gradient(135deg, #3a8ffe 0%, #9658fe 100%);
+
+}
+
+#Upload{
+    width: 100%;
+    height:40px;
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    background: linear-gradient(135deg, #3a8ffe 0%, red 50%, #9658fe 100%);
+}

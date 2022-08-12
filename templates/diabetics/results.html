@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Patient Result {% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row card mb-2">
+        <div class="alert alert-info text-dark">
+            <div class="h4"> Result of <t class="fw-bold">{{patient_instance.fullname}}</t> carried out on {{patient_instance.tested_on}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <img src="{{patient_instance.uploaded_data.url}}" alt="Original_data" class="card-img w-50 rounded">
+                <p> Original Data </p>
+            </div>
+            <div class="col-md-6 mx-auto">
+                <img src="{{ patient_instance.generated_data.url }}" alt="generated_data" class="card-img w-50 rounded">
+                <p> Generated Data </p>
+            </div>
+        </div>
+        <div class="alert alert-warning fw-bold mb-0 text-dark">
+            Patient has been diagnosed of <t class="text-danger fw-bold">{{patient_instance.result}}</t>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 mx-auto">
+            <a class="nav-link" href="{% url 'homepage' %}">
+                <input class="btn btn-md btn-danger" value="Go Home">
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
